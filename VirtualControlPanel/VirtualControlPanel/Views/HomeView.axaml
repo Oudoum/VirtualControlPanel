@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:VirtualControlPanel.ViewModels"
+             xmlns:styles="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+             xmlns:converters="clr-namespace:VirtualControlPanel.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="VirtualControlPanel.Views.HomeView"
+             x:DataType="vm:HomeViewModel">
+    
+    <UserControl.Resources>
+        <converters:NullableConverter x:Key="NullableConverter" />
+    </UserControl.Resources>
+    
+    <Grid RowDefinitions="Auto Auto Auto"
+          Margin="0 25 0 0">
+        <StackPanel Grid.Row="0"
+                    Spacing="10"
+                    HorizontalAlignment="Center">
+            <ToggleSwitch Content="Autostart"
+                          Classes="accent"
+                          HorizontalAlignment="Center"
+                          IsChecked="{Binding Settings.IsAutoStart}"/>
+            <TextBox styles:TextFieldAssist.Label="IP-Address"
+                     Watermark="127.0.0.1"
+                     UseFloatingWatermark="True"
+                     Classes="outline clearButton"
+                     Theme="{StaticResource OutlineTextBox}"
+                     TextAlignment="Center"
+                     Text="{Binding Settings.IpAddress}" />
+            <TextBox styles:TextFieldAssist.Label="Port"
+                     Watermark="2024"
+                     UseFloatingWatermark="True"
+                     Classes="outline clearButton"
+                     Theme="{StaticResource OutlineTextBox}"
+                     TextAlignment="Center"
+                     Text="{Binding Settings.Port, Converter={StaticResource NullableConverter}}" />
+            <Button Content="Save"
+                    Classes="accent"
+                    Command="{Binding SaveSettingsCommand}" />
+        </StackPanel>
+        <SelectableTextBlock Grid.Row="1"
+                             Margin="0 25 0 0"
+                             FontWeight="Bold"
+                             FontSize="18"
+                             HorizontalAlignment="Center"
+                             Text="{Binding Title}" />
+        <StackPanel Grid.Row="2"
+                    Spacing="10"
+                    HorizontalAlignment="Center">
+            <Button Classes.started="{Binding IsStarted}"
+                    Command="{Binding StartStopConnectionCommand}">
+                <Button.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="Content" Value="Connect" />
+                        <Setter Property="Background" Value="Red" />
+                    </Style>
+                    <Style Selector="Button.started">
+                        <Setter Property="Background" Value="LimeGreen" />
+                        <Setter Property="Content" Value="Disconnect" />
+                    </Style>
+                </Button.Styles>
+            </Button>
+            <StackPanel
+                Spacing="10"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+                <ToggleButton Command="{Binding OpenPmdgCduLeftCommand}"
+                              CommandParameter="{Binding $self.IsChecked}"
+                              IsChecked="{Binding Settings.IsCduLeftEnabled}"
+                              Content="CDU Left"
+                              Classes="accent"
+                              HorizontalAlignment="Center">
+                </ToggleButton>
+                <ToggleButton Command="{Binding OpenPmdgCduCenterCommand}"
+                              CommandParameter="{Binding $self.IsChecked}"
+                              IsChecked="{Binding Settings.IsCduCenterEnabled}"
+                              Content="CDU Center"
+                              Classes="accent"
+                              HorizontalAlignment="Center">
+                </ToggleButton>
+                <ToggleButton Command="{Binding OpenPmdgCduRightCommand}"
+                              CommandParameter="{Binding $self.IsChecked}"
+                              IsChecked="{Binding Settings.IsCduRightEnabled}"
+                              Content="CDU Right"
+                              Classes="accent"
+                              HorizontalAlignment="Center">
+                </ToggleButton>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

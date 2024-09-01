@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:VirtualControlPanel.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
+             x:Class="VirtualControlPanel.Views.HelpView"
+             x:DataType="vm:HelpViewModel"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center">
+    <Grid>
+        <TextBlock xml:space="preserve">
+                <Bold>
+                    <Span FontSize="22">Controls:</Span>
+                </Bold>
+                <Bold>Right click:</Bold> Enter/Exit editor mode
+
+                <Bold>Escape:</Bold> Close window
+                <Bold>Left click and move:</Bold> Move window
+                <Bold>Double left click:</Bold> Maximize
+                <Bold>Alt + Enter:</Bold> Fullscreen
+
+                <Bold>Control + Mouse Wheel:</Bold> Scale X and Y
+                <Bold>Shift + Mouse Wheel:</Bold> Scale X
+                <Bold>Alt + Mouse Wheel:</Bold> Scale Y
+
+                <Bold>Shift + F:</Bold> Increase font size
+                <Bold>F:</Bold> Decrease font size
+
+                <Bold>Shift + Space:</Bold> Reset grid size
+                <Bold>Shift + Enter:</Bold> Reset to default
+
+                <Bold>Up:</Bold> Move grid up
+                <Bold>Left:</Bold> Move grid left
+                <Bold>Down:</Bold> Move grid down
+                <Bold>Right:</Bold> Move grid right
+
+                <Bold>W:</Bold> Decrease grid height
+                <Bold>A:</Bold> Increase grid width
+                <Bold>S:</Bold> Increase grid height
+                <Bold>D:</Bold> Decrease grid width
+
+                <Bold>Page Up:</Bold> Decrease last row height
+                <Bold>Page Down:</Bold> Increase last row height
+
+                <Bold>Shift + Page Up:</Bold> Increase grid on the top (all cells)
+                <Bold>Shift + Page Down:</Bold> Decrease grid on the top (all cells)
+
+                <Bold>Add:</Bold> Increase grid on the left (all cells)
+                <Bold>Subtract:</Bold> Decrease grid on the left (all cells)
+
+                <Bold>Shift + Add:</Bold> Decrease last column width
+                <Bold>Shift + Subtract:</Bold> Increase last column width
+            </TextBlock>
+    </Grid>
+</UserControl>

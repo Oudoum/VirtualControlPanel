@@ -1,0 +1,21 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:VirtualControlPanel.Views"
+        xmlns:viewModels="clr-namespace:VirtualControlPanel.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="660" d:DesignHeight="550"
+        x:Class="VirtualControlPanel.Views.PmdgCduWindow"
+        x:DataType="viewModels:PmdgCduViewModel"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        Topmost="True"
+        Icon="/Assets/VCP.ico"
+        PointerPressed="InputElementOnPointerPressed"
+        KeyDown="InputElementOnKeyDown"
+        PositionChanged="WindowBaseOnPositionChanged"
+        SizeChanged="Control_OnSizeChanged"
+        Title="{Binding Title}">
+    <views:PmdgCduView />
+</Window>

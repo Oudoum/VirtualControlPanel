@@ -1,0 +1,101 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:VirtualControlPanel.ViewModels"
+             xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:views="clr-namespace:VirtualControlPanel.Views"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="VirtualControlPanel.Views.MainView"
+             x:DataType="vm:MainViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock.SubHeadline">
+            <Setter Property="Margin" Value="0, 16" />
+        </Style>
+        <Style Selector="TextBlock.SubHeadline2">
+            <Setter Property="Margin" Value="0, 8" />
+        </Style>
+        <Style Selector="TextBlock.Content">
+            <Setter Property="Margin" Value="0, 4" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+    </UserControl.Styles>
+    <controls:NavigationDrawer
+        Name="LeftDrawer"
+        Classes="permanent"
+        LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
+        <controls:NavigationDrawer.LeftDrawerContent>
+            <Grid RowDefinitions="* Auto">
+                <ScrollViewer Grid.Row="0">
+                    <StackPanel>
+                        <controls:ColorZone Mode="Accent" Height="80">
+                            <TextBlock Classes="Headline5"
+                                       Text="Virtual Control Panel"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </controls:ColorZone>
+                        <ListBox Classes="NoScroll"
+                                 Name="DrawerList"
+                                 Focusable="{Binding ElementName=LeftDrawer, Path=LeftDrawerOpened}">
+                            <ListBox.Styles>
+                                <Style Selector="ListBoxItem">
+                                    <Setter Property="Height" Value="48" />
+                                    <Setter Property="Padding" Value="16,0" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                </Style>
+                            </ListBox.Styles>
+                            <ListBoxItem IsSelected="True">Home</ListBoxItem>
+                            <ListBoxItem>Help</ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </controls:NavigationDrawer.LeftDrawerContent>
+
+        <DockPanel LastChildFill="True">
+            <controls:ColorZone Name="PART_AppBarContainer"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch"
+                                DockPanel.Dock="Top"
+                                Height="56"
+                                Mode="PrimaryMid"
+                                ZIndex="1">
+                <ToggleButton
+                    Name="NavDrawerSwitch"
+                    Margin="16 0 0 0"
+                    HorizontalAlignment="Left"
+                    Theme="{StaticResource MaterialFlatButton}"
+                    Width="32" Height="32" Padding="4">
+                    <avalonia:MaterialIcon Kind="Menu" Width="24" Height="24" />
+                </ToggleButton>
+            </controls:ColorZone>
+            <ScrollViewer Name="MainScroller"
+                          DockPanel.Dock="Top"
+                          HorizontalContentAlignment="Stretch"
+                          HorizontalAlignment="Stretch"
+                          HorizontalScrollBarVisibility="Disabled">
+                <Border HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+                    <Carousel Name="PageCarousel"
+                              HorizontalAlignment="Stretch">
+                        <Carousel.Styles>
+                            <Style Selector="Carousel#PageCarousel:not(.no-transitions)">
+                                <Setter Property="PageTransition">
+                                    <PageSlide Duration="0.25"
+                                               Orientation="Vertical" />
+                                </Setter>
+                            </Style>
+                        </Carousel.Styles>
+
+                        <views:HomeView DataContext="{Binding HomeViewModel}" />
+
+                        <views:HelpView DataContext="{Binding HelpViewModel}" />
+
+                    </Carousel>
+                </Border>
+            </ScrollViewer>
+        </DockPanel>
+    </controls:NavigationDrawer>
+</UserControl>
