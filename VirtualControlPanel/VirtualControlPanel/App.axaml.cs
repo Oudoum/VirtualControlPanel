@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
 using Microsoft.Extensions.DependencyInjection;
-using VirtualControlPanel.Models;
+using VirtualControlPanel.Services;
 using VirtualControlPanel.ViewModels;
 
 namespace VirtualControlPanel;
