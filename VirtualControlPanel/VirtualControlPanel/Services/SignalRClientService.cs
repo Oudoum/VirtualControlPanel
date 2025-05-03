@@ -4,8 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using VirtualControlPanel.Models;
 
-namespace VirtualControlPanel.Models;
+namespace VirtualControlPanel.Services;
 
 public class SignalRClientService
 {
