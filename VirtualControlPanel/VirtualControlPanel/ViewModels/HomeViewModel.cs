@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using VirtualControlPanel.Models;
+using VirtualControlPanel.Services;
 
 namespace VirtualControlPanel.ViewModels;
 
