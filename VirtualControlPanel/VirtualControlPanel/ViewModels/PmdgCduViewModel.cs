@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using VirtualControlPanel.Models;
+using VirtualControlPanel.Services;
 
 namespace VirtualControlPanel.ViewModels;
 
