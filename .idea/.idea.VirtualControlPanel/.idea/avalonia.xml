@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="VirtualControlPanel/VirtualControlPanel/App.axaml" value="VirtualControlPanel/VirtualControlPanel.Browser/VirtualControlPanel.Browser.csproj" />
+        <entry key="VirtualControlPanel/VirtualControlPanel/Views/HelpView.axaml" value="VirtualControlPanel/VirtualControlPanel.Desktop/VirtualControlPanel.Desktop.csproj" />
+        <entry key="VirtualControlPanel/VirtualControlPanel/Views/HomeView.axaml" value="VirtualControlPanel/VirtualControlPanel.Desktop/VirtualControlPanel.Desktop.csproj" />
+        <entry key="VirtualControlPanel/VirtualControlPanel/Views/MainView.axaml" value="VirtualControlPanel/VirtualControlPanel.Desktop/VirtualControlPanel.Desktop.csproj" />
+        <entry key="VirtualControlPanel/VirtualControlPanel/Views/MainWindow.axaml" value="VirtualControlPanel/VirtualControlPanel.Desktop/VirtualControlPanel.Desktop.csproj" />
+        <entry key="VirtualControlPanel/VirtualControlPanel/Views/PmdgCdu.axaml" value="VirtualControlPanel/VirtualControlPanel.Desktop/VirtualControlPanel.Desktop.csproj" />
+        <entry key="VirtualControlPanel/VirtualControlPanel/Views/PmdgCduView.axaml" value="VirtualControlPanel/VirtualControlPanel.Desktop/VirtualControlPanel.Desktop.csproj" />
+        <entry key="VirtualControlPanel/VirtualControlPanel/Views/PmdgCduWindow.axaml" value="VirtualControlPanel/VirtualControlPanel.Desktop/VirtualControlPanel.Desktop.csproj" />
+        <entry key="VirtualControlPanel/VirtualControlPanel/Views/SettingsView.axaml" value="VirtualControlPanel/VirtualControlPanel.Browser/VirtualControlPanel.Browser.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
