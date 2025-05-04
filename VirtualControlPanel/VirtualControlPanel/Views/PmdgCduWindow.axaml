@@ -14,8 +14,8 @@
         Icon="/Assets/VCP.ico"
         PointerPressed="InputElementOnPointerPressed"
         KeyDown="InputElementOnKeyDown"
-        PositionChanged="WindowBaseOnPositionChanged"
-        SizeChanged="Control_OnSizeChanged"
+        PositionChanged="OnPositionChanged"
+        SizeChanged="OnSizeChanged"
         Title="{Binding Title}">
     <views:PmdgCduView />
 </Window>
