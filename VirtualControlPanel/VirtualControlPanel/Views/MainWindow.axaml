@@ -8,9 +8,11 @@
         x:Class="VirtualControlPanel.Views.MainWindow"
         WindowStartupLocation="CenterScreen"
         Title="Virtual Control Panel"
-        Icon="/Assets/VCP.ico"
+        Icon="avares://VirtualControlPanel/Assets/VCP.ico"
         MinWidth="800"
         MinHeight="450"
+        PositionChanged="OnPositionChanged"
+        SizeChanged="OnSizeChanged"
         x:DataType="vm:MainViewModel">
     <Window.Styles>
         <Style Selector="TitleBar">
