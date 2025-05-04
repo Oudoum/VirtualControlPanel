@@ -28,7 +28,7 @@ public class App : Application
             .BuildServiceProvider());
     }
 
-    public override async void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
     {
         GC.KeepAlive(typeof(DialogService));
         IDialogService? dialogService = Ioc.Default.GetService<IDialogService>();
@@ -44,12 +44,6 @@ public class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
-        }
-        
-        HomeViewModel? homeViewModel = Ioc.Default.GetService<HomeViewModel>();
-        if (homeViewModel is not null)
-        {
-            await homeViewModel.Startup();
         }
     }
 }
