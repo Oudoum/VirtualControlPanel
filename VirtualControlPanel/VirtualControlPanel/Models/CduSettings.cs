@@ -1,13 +1,17 @@
+using Avalonia.Controls;
+
 namespace VirtualControlPanel.Models;
 
 public class CduSettings
 {
+    public WindowState WindowState { get; set; }
+
     public int PositionX { get; set; }
     public int PositionY { get; set; }
 
     public double Width { get; set; } = 660;
     public double Height { get; set; } = 550;
-    
+
     public double CharacterSize { get; set; } = 50;
 
     public double MarginTop { get; set; }
