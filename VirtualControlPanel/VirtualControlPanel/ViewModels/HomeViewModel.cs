@@ -67,16 +67,16 @@ public partial class HomeViewModel : ObservableObject
         _signalRClient.TitleReceived += title => Title = title;
     }
 
-    public async Task Startup()
+    public async Task OnLoaded()
     {
         if (Settings.IsAutoStart)
         {
-            await StartStopConnectionCommand.ExecuteAsync(null);
+            await StartStopConnection();
         }
 
-        OpenPmdgCduLeftCommand.Execute(Settings.IsCduLeftEnabled);
-        OpenPmdgCduRightCommand.Execute(Settings.IsCduRightEnabled);
-        OpenPmdgCduCenterCommand.Execute(Settings.IsCduCenterEnabled);
+        OpenPmdgCduLeft(Settings.IsCduLeftEnabled);
+        OpenPmdgCduRight(Settings.IsCduRightEnabled);
+        OpenPmdgCduCenter(Settings.IsCduCenterEnabled);
     }
 
     [ObservableProperty]
@@ -113,7 +113,7 @@ public partial class HomeViewModel : ObservableObject
     private bool _isStarted;
 
     [RelayCommand]
-    private async Task StartStopConnection(CancellationToken cancellationToken)
+    private async Task StartStopConnection(CancellationToken cancellationToken = default)
     {
         if (IsStarted)
         {
