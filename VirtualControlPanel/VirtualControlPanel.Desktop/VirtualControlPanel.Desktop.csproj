@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
+        <ApplicationIcon>..\VirtualControlPanel\Assets\VCP.ico</ApplicationIcon>
         <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
 
@@ -17,6 +18,7 @@
         <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.2.7.3" />
     </ItemGroup>
 
     <ItemGroup>
