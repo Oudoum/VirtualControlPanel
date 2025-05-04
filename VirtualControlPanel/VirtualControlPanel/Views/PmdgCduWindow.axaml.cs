@@ -1,15 +1,33 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using VirtualControlPanel.Models;
 using VirtualControlPanel.ViewModels;
 
 namespace VirtualControlPanel.Views;
 
 public partial class PmdgCduWindow : Window
 {
+    private CduSettings? _cduSettings;
+
     public PmdgCduWindow()
     {
         InitializeComponent();
+
+        Opened += (_, _) =>
+        {
+            if (DataContext is not PmdgCduViewModel pmdgCduViewModel)
+            {
+                return;
+            }
+
+            CduSettings cduSettings = pmdgCduViewModel.CduSettings;
+            Width = cduSettings.Width;
+            Height = cduSettings.Height;
+            Position = new PixelPoint(cduSettings.PositionX, cduSettings.PositionY);
+            WindowState = cduSettings.WindowState;
+            _cduSettings = cduSettings; 
+        };
     }
 
     private void InputElementOnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -55,46 +73,26 @@ public partial class PmdgCduWindow : Window
         WindowState = WindowState.Normal;
     }
 
-    private bool _startup;
-
-    private void WindowBaseOnPositionChanged(object? sender, PixelPointEventArgs e)
+    private void OnPositionChanged(object? sender, PixelPointEventArgs e)
     {
-        if (DataContext is not PmdgCduViewModel pmdgCduViewModel)
+        if (_cduSettings is null)
         {
             return;
         }
 
-        if (!_startup)
-        {
-            Position = new PixelPoint(pmdgCduViewModel.CduSettings.PositionX, pmdgCduViewModel.CduSettings.PositionY);
-            _startup = true;
-            return;
-        }
-
-        if (e.Point is { X: -32000, Y: 32000 })
-        {
-            return;
-        }
-
-        pmdgCduViewModel.CduSettings.PositionX = e.Point.X;
-        pmdgCduViewModel.CduSettings.PositionY = e.Point.Y;
+        _cduSettings.PositionX = e.Point.X;
+        _cduSettings.PositionY = e.Point.Y;
     }
-    
-    private void Control_OnSizeChanged(object? sender, SizeChangedEventArgs e)
+
+    private void OnSizeChanged(object? sender, SizeChangedEventArgs e)
     {
-        if (DataContext is not PmdgCduViewModel pmdgCduViewModel)
+        if (_cduSettings is null)
         {
             return;
         }
 
-        if (e.PreviousSize is { Width: 0, Height: 0 })
-        {
-            Width = pmdgCduViewModel.CduSettings.Width;
-            Height = pmdgCduViewModel.CduSettings.Height;
-            return;
-        }
-        
-        pmdgCduViewModel.CduSettings.Width = e.NewSize.Width;
-        pmdgCduViewModel.CduSettings.Height = e.NewSize.Height;
+        _cduSettings.Width = e.NewSize.Width;
+        _cduSettings.Height = e.NewSize.Height;
+        _cduSettings.WindowState = WindowState;
     }
 }
