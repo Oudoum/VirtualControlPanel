@@ -13,6 +13,12 @@
         <converters:NullableConverter x:Key="NullableConverter" />
     </UserControl.Resources>
     
+    <Interaction.Behaviors>
+        <EventTriggerBehavior EventName="Loaded">
+            <InvokeCommandAction Command="{Binding OnLoaded}" />
+        </EventTriggerBehavior>
+    </Interaction.Behaviors>
+    
     <Grid RowDefinitions="Auto Auto Auto"
           Margin="0 25 0 0">
         <StackPanel Grid.Row="0"
