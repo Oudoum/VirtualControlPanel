@@ -24,4 +24,6 @@ public class CduSettings
 
     public double ScaleX { get; set; } = 1;
     public double ScaleY { get; set; } = 1;
+
+    public int Brightness { get; set; } = 100;
 }
