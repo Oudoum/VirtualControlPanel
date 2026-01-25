@@ -51,6 +51,9 @@
 
                 <Bold>Shift + Add:</Bold> Decrease last column width
                 <Bold>Shift + Subtract:</Bold> Increase last column width
+
+                <Bold>Shift + Up:</Bold> Brightness up
+                <Bold>Shift + Down:</Bold> Brightness down
             </TextBlock>
     </Grid>
 </UserControl>
