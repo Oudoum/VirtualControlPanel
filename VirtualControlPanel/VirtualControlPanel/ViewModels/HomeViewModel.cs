@@ -125,7 +125,7 @@ public partial class HomeViewModel : ObservableObject
         await _signalRClient.StartConnectionAsync(Settings.IpAddress, Settings.Port, cancellationToken);
         IsStarted = true;
     }
-    
+
     private void OpenPmdgCdu(int index, bool isEnabled)
     {
         PmdgCduViewModel dialogViewModel = _pmdgCduViewModels[index];
