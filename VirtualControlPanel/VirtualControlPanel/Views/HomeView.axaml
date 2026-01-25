@@ -8,17 +8,17 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="VirtualControlPanel.Views.HomeView"
              x:DataType="vm:HomeViewModel">
-    
+
     <UserControl.Resources>
         <converters:NullableConverter x:Key="NullableConverter" />
     </UserControl.Resources>
-    
+
     <Interaction.Behaviors>
         <EventTriggerBehavior EventName="Loaded">
             <InvokeCommandAction Command="{Binding OnLoaded}" />
         </EventTriggerBehavior>
     </Interaction.Behaviors>
-    
+
     <Grid RowDefinitions="Auto Auto Auto"
           Margin="0 25 0 0">
         <StackPanel Grid.Row="0"
@@ -27,7 +27,7 @@
             <ToggleSwitch Content="Autostart"
                           Classes="accent"
                           HorizontalAlignment="Center"
-                          IsChecked="{Binding Settings.IsAutoStart}"/>
+                          IsChecked="{Binding Settings.IsAutoStart}" />
             <TextBox styles:TextFieldAssist.Label="IP-Address"
                      Watermark="127.0.0.1"
                      UseFloatingWatermark="True"
@@ -68,31 +68,27 @@
                     </Style>
                 </Button.Styles>
             </Button>
-            <StackPanel
-                Spacing="10"
-                Orientation="Horizontal"
-                HorizontalAlignment="Center">
+            <StackPanel Spacing="10"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
                 <ToggleButton Command="{Binding OpenPmdgCduLeftCommand}"
                               CommandParameter="{Binding $self.IsChecked}"
                               IsChecked="{Binding Settings.IsCduLeftEnabled}"
                               Content="CDU Left"
                               Classes="accent"
-                              HorizontalAlignment="Center">
-                </ToggleButton>
+                              HorizontalAlignment="Center" />
                 <ToggleButton Command="{Binding OpenPmdgCduCenterCommand}"
                               CommandParameter="{Binding $self.IsChecked}"
                               IsChecked="{Binding Settings.IsCduCenterEnabled}"
                               Content="CDU Center"
                               Classes="accent"
-                              HorizontalAlignment="Center">
-                </ToggleButton>
+                              HorizontalAlignment="Center" />
                 <ToggleButton Command="{Binding OpenPmdgCduRightCommand}"
                               CommandParameter="{Binding $self.IsChecked}"
                               IsChecked="{Binding Settings.IsCduRightEnabled}"
                               Content="CDU Right"
                               Classes="accent"
-                              HorizontalAlignment="Center">
-                </ToggleButton>
+                              HorizontalAlignment="Center" />
             </StackPanel>
         </StackPanel>
     </Grid>
