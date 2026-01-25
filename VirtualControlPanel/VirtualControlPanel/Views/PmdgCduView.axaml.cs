@@ -18,8 +18,8 @@ public partial class PmdgCduView : UserControl
 
     private const FontWeight DefaultFontWeight = (FontWeight)550;
 
-    private readonly FontFamily _pmdgFontNormal = new("avares://VirtualControlPanel/Assets/Fonts#PMDG_NGXu_DU_B");
-    private readonly FontFamily _pmdgFontsSmall = new("avares://VirtualControlPanel/Assets/Fonts#PMDG_NGXu_DU_C");
+    private readonly FontFamily _pmdgFontNormal = new("avares://VirtualControlPanel/Assets/Fonts#PMDG_NG3_DU");
+    private readonly FontFamily _pmdgFontsSmall = new("avares://VirtualControlPanel/Assets/Fonts#PMDG_NG3_DU_SMALL");
 
     private readonly SolidColorBrush _transparent = new(Colors.Transparent);
     private readonly SolidColorBrush _gray = new(Colors.Gray);
@@ -35,7 +35,7 @@ public partial class PmdgCduView : UserControl
     private readonly Thickness _one = new(1);
 
     private CduSettings _cduSettings = new();
-    
+
     public PmdgCduView()
     {
         InitializeComponent();
@@ -45,26 +45,28 @@ public partial class PmdgCduView : UserControl
 
     private void OnDataContextChanged(object? sender, EventArgs e)
     {
-        if (DataContext is PmdgCduViewModel pmdgCduViewModel)
+        if (DataContext is not PmdgCduViewModel pmdgCduViewModel)
         {
-            _cduSettings = pmdgCduViewModel.CduSettings;
-            pmdgCduViewModel.SignalRClientService.PmdgDataReceived += (location, data) =>
-            {
-                if (location == pmdgCduViewModel.Title)
-                {
-                    InvokeSetPmdgCduCells(data);
-                }
-            };
+            return;
         }
 
+        pmdgCduViewModel.ScreenUpdated += () => { Dispatcher.UIThread.Invoke(() => SetPmdgCduCells(pmdgCduViewModel.CduScreenData)); };
+
+
+        _cduSettings = pmdgCduViewModel.CduSettings;
         CreatePmdgCduCells();
         CduGrid.Width = _cduSettings.GridWidth;
         CduGrid.Height = _cduSettings.GridHeight;
         CduGrid.RenderTransform = new ScaleTransform(_cduSettings.ScaleX, _cduSettings.ScaleY);
+
+        SetPmdgCduCells(pmdgCduViewModel.CduScreenData);
+
+        DataContextChanged -= OnDataContextChanged;
     }
-    
+
     private void CreatePmdgCduCells()
     {
+        CduGrid.Opacity = _cduSettings.Brightness / 100f;
         double characterSize = _cduSettings.CharacterSize;
         Thickness margin = new(_cduSettings.MarginLeft, _cduSettings.MarginTop, _cduSettings.MarginRight, _cduSettings.MarginBottom);
         for (int column = 0; column < 24; column++)
@@ -96,70 +98,45 @@ public partial class PmdgCduView : UserControl
         }
     }
 
-    private int? _brightness;
-
-    public int? Brightness
-    {
-        get => _brightness;
-        set
-        {
-            if (_brightness == value || value is null)
-            {
-                return;
-            }
-
-            _brightness = value;
-            CduGrid.Opacity = (double)(1d / 4095 * value);
-        }
-    }
-
-    private void InvokeSetPmdgCduCells(byte[] cduScreenData)
-    {
-        Dispatcher.UIThread.Invoke(() => SetPmdgCduCells(cduScreenData));
-    }
-
     private void SetPmdgCduCells(byte[] cduScreenData)
     {
-        if (CduGrid.Children.Count <= 0)
+        if (CduGrid.Children.Count <= 0 || cduScreenData.Length != Cdu.ScreenStateSize)
         {
             return;
         }
 
-        // byte brightness = 0;
+        byte brightness = 0;
         int cellFactor = 0;
-        for (int i = 0; i < Cdu.CduCells; i++)
+        for (int i = 1; i <= Cdu.CduCells; i++)
         {
             int cellNumber = i + cellFactor;
-            Border border = (Border)CduGrid.Children[i];
+            Border border = (Border)CduGrid.Children[i - 1];
             TextBlock txtBlock = (TextBlock)border.Child!;
 
-            char symbol = (char)cduScreenData[cellNumber];
+            char symbol = (char)cduScreenData[cellNumber - 1];
             txtBlock.Text = symbol.ToString();
-            
-            // if (symbol == 'ë' && Brightness is null)
-            // {
-            //     CduGrid.Opacity = 1d / 23 * ++brightness;
-            // }
-            // if (brightness == 0 && columnCount == 23 && rowCount == 13 && symbol == '-' && cell.Flags == Cdu.Flags.Unused && Brightness is null)
-            // {
-            //     CduGrid.Opacity = 0;
-            // }
+
+            if (symbol == 'ë')
+            {
+                double opacity = 1d / 23 * ++brightness + 0.004;
+                CduGrid.Opacity = Math.Min(opacity, 1d);
+            }
+
+            if (i == Cdu.CduCells && brightness == 0 && symbol == '-')
+            {
+                CduGrid.Opacity = 0;
+            }
 
             if (_editorMode)
             {
                 border.BorderThickness = _one;
             }
 
-            byte color = cduScreenData[cellNumber + 1];
+            byte color = cduScreenData[cellNumber];
             txtBlock.Foreground = SetForeground(color);
 
-            byte flags = cduScreenData[cellNumber + 2];
+            byte flags = cduScreenData[cellNumber + 1];
             SetTextBlockWithFlags(flags, txtBlock, border);
-
-            // if (columnCount == 0 && rowCount == 0)
-            // {
-            //     txtBlock.FontFamily = _pmdgFontBig;
-            // }
 
             cellFactor += 2;
         }
@@ -253,7 +230,7 @@ public partial class PmdgCduView : UserControl
         _editorMode = !_editorMode;
         AllCduGridChildren(border => { border.BorderThickness = border.BorderThickness == _zero ? _one : _zero; });
     }
-    
+
     private void InputElementOnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         if (!_editorMode)
@@ -264,8 +241,8 @@ public partial class PmdgCduView : UserControl
         switch (e.KeyModifiers)
         {
             case KeyModifiers.Alt:
-                case KeyModifiers.Control:
-                    case KeyModifiers.Shift:
+            case KeyModifiers.Control:
+            case KeyModifiers.Shift:
                 break;
 
             case KeyModifiers.None:
@@ -276,7 +253,7 @@ public partial class PmdgCduView : UserControl
 
         double scaleX = _cduSettings.ScaleX;
         double scaleY = _cduSettings.ScaleY;
-        
+
         switch (e.Delta.Y)
         {
             case > 0 when e.KeyModifiers == KeyModifiers.Control && scaleX < 3 && scaleY < 3:
@@ -288,7 +265,7 @@ public partial class PmdgCduView : UserControl
                 scaleX -= 0.01;
                 scaleY -= 0.01;
                 break;
-            
+
             case > 0 when e.KeyModifiers == KeyModifiers.Shift && scaleX < 3:
                 scaleX += 0.01;
                 break;
@@ -296,7 +273,7 @@ public partial class PmdgCduView : UserControl
             case < 0 when e.KeyModifiers == KeyModifiers.Shift && scaleX > 0.3:
                 scaleX -= 0.01;
                 break;
-            
+
             case > 0 when e.KeyModifiers == KeyModifiers.Alt && scaleY < 3:
                 scaleY += 0.01;
                 break;
@@ -333,7 +310,7 @@ public partial class PmdgCduView : UserControl
             case Key.Space when e.KeyModifiers == KeyModifiers.Shift:
                 ResetHeightAndWidth();
                 break;
-            
+
             case Key.Enter when e.KeyModifiers == KeyModifiers.Alt:
                 break;
 
@@ -398,6 +375,16 @@ public partial class PmdgCduView : UserControl
                 SetMarginCduGridChildren();
                 break;
 
+            case Key.Up when e.KeyModifiers == KeyModifiers.Shift:
+                if (_cduSettings.Brightness == 100)
+                {
+                    break;
+                }
+
+                _cduSettings.Brightness++;
+                CduGrid.Opacity = _cduSettings.Brightness / 100f;
+                break;
+
             case Key.Up:
                 _cduSettings.MarginTop--;
                 _cduSettings.MarginBottom++;
@@ -408,6 +395,16 @@ public partial class PmdgCduView : UserControl
                 _cduSettings.MarginLeft--;
                 _cduSettings.MarginRight++;
                 SetMarginCduGridChildren();
+                break;
+
+            case Key.Down when e.KeyModifiers == KeyModifiers.Shift:
+                if (_cduSettings.Brightness == 0)
+                {
+                    break;
+                }
+
+                _cduSettings.Brightness--;
+                CduGrid.Opacity = _cduSettings.Brightness / 100f;
                 break;
 
             case Key.Down:
